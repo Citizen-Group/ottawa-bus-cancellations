@@ -129,7 +129,7 @@ app = Flask(__name__)
 ## Dev area for routes 
 @app.route('/test')
 def home():
-    return render_template("index.jinja", title="test", descrip="AnotherVar")
+    return render_template("index.html", title="test", descrip="AnotherVar")
 
 @app.route('/test2')
 def test():
