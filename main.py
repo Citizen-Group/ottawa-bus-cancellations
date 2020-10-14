@@ -4,11 +4,11 @@
 import pymongo
 from pymongo import MongoClient
 from pymongo.errors import CollectionInvalid
-from jinja2 import Template
 import folium
 import json
 import csv
 import os
+import routes
 
 #MongoDB
 
@@ -126,13 +126,19 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
+## Dev area for routes 
 @app.route('/test')
-def test():
+def home():
+    return render_template("index.jinja", title="test", descrip="AnotherVar")
 
-    return render_template("jinjatest.jinja", title="test", descrip="AnotherVar")
+@app.route('/test2')
+def test():
+    return render_template("index.jinja", title="test", descrip="AnotherVar")
+
+## Old
 
 @app.route('/')
-def home():
+def index():
     return render_template("index.html")
 
 
