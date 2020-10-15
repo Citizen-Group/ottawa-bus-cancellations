@@ -125,20 +125,106 @@ with open(filename5, 'r') as csvfile:
 from flask import Flask, render_template
 app = Flask(__name__)
 
+class STATUSLEVELS():
+    DANGER = 2,
+    WARNING = 1,
+    OK = 0
+
+# I'll need to define a "Route, return and stop class element soon"
+
+class fakeRouteElement():    
+    def __init__(self, imp_id, status, canCount, warnCount):
+        self.eId = imp_id
+        self.eStatus = status
+        self.eCanCount = canCount
+        self.eWarnCount = warnCount
+
+fakeRouteList=[
+    fakeRouteElement(95,1,0,0),
+    fakeRouteElement(75,1,0,0),
+    fakeRouteElement(85,1,0,0),
+    fakeRouteElement(88,1,0,0),
+    fakeRouteElement(4,1,1,2)
+]
+
+fakeRouteList2=[
+    { "eId": 5, "eStatus": 1,"eCanCount": 1, "eWarnCount": 2}
+]
 
 ## Dev area for routes 
-@app.route('/test')
-def home():
-    return render_template("index.jinja", title="test", descrip="AnotherVar")
+@app.route('/<routeID>/<stopID>')
+def routesAndStops(routeID, stopID):
 
-@app.route('/test2')
-def test():
-    return render_template("index.jinja", title="test", descrip="AnotherVar")
+    #Route and stop valid parsing needs to be done here
+    #add "isValid" to the first if
 
-## Old
+    if routeID is not None or stopID is not None: 
+        if routeID.lower() == "all":
+
+            #Here we will need to do a quick call to get the cached health of all the routes
+            #Filter out the routes we don't need and update a list of
+            # RouteID's, statusLevel, HasCancellations, HasWarnings
+            # WE can update the JS on the page to hardcode the images used for "bus route types"
+            # So we don't need to pass extra data per cycle
+
+            #API check also needed here as well as cancellation check
+
+            #Switch over to class return type
+
+            return render_template("stops.html",
+            title="Occasional Transport: Ottawa Bus Edition", 
+            mastHead="Stops Page",
+            selectedRouteID="all",
+            selectedstopID=stopID,
+            statusLevel=STATUSLEVELS.OK, 
+            locationText="Located between at the intersection of Two and Fern",
+            locationDescrip="Lovely Stop. Great Atmosphere",
+            mastDescrip="Display all Stops For " + stopID + " stop ID",
+            fakeRouteListSend=fakeRouteList)
+        else:
+            return render_template("stops.html",
+            title="Occasional Transport: Ottawa Bus Edition", 
+            mastHead="Stops Page",
+            selectedRouteID=routeID,
+            selectedstopID=stopID,
+            statusLevel=STATUSLEVELS.OK,
+            locationText="Located between at the intersection of Two and Fern",
+            locationDescrip="Lovely Stop. Great Atmosphere",
+            mastDescrip="Display "+ routeID +" route information for " + stopID + " stop ID",
+            fakeRouteListSend=fakeRouteList)
+    else:
+        index()
+
+@app.route('/<routeID>')
+def busRoutes(routeID):
+
+    #Route valid parsing needs to be done here
+    #add "isValid" to the first if
+
+    if routeID is not None:
+        return render_template("routes.html",
+        title="Occasional Transport: Ottawa Bus Edition", 
+        mastHead="Routes Page",
+        selectedRouteID=routeID,
+        statusLevel=STATUSLEVELS.OK, 
+        mastDescrip="Display "+ routeID +" route information ")
+    else:
+        index()
 
 @app.route('/')
 def index():
+
+    return render_template("index.html",
+    title="Occasional Transport: Ottawa Bus Edition", 
+    mastHead="Where's my @#$@ Bus?",
+    statusLevel=STATUSLEVELS.OK, 
+    mastDescrip="Who knows. We don't. Move along.")
+
+## Old
+
+
+@app.route('/poop')
+def home():
     return render_template("index.html")
 
 
@@ -238,5 +324,3 @@ def cancel(cancel_id):
 
 if __name__=="__main__":
     app.run(port=8000,debug=True)
-
-
