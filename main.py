@@ -9,6 +9,8 @@ import json
 import csv
 import os
 import routes
+import database
+from flask import json
 
 #MongoDB
 
@@ -122,22 +124,56 @@ with open(filename5, 'r') as csvfile:
 
 #MAIN
 
+database.onStart()
+
 from flask import Flask, render_template
 app = Flask(__name__)
+
+# Global Vars
+# I'll do the work here and we can later move it out to its on .py
 
 class STATUSLEVELS():
     DANGER = 2,
     WARNING = 1,
     OK = 0
 
-# I'll need to define a "Route, return and stop class element soon"
-
-class fakeRouteElement():    
+class transitElement():    
     def __init__(self, imp_id, status, canCount, warnCount):
         self.eId = imp_id
         self.eStatus = status
         self.eCanCount = canCount
         self.eWarnCount = warnCount
+
+class fakeRouteElement(transitElement):    
+    def __init__(self, imp_id, status, canCount, warnCount):
+        self.eId = imp_id
+        self.eStatus = status
+        self.eCanCount = canCount
+        self.eWarnCount = warnCount
+
+
+class fakeStopElement():
+    def __init__(self, imp_id, status, canCount, warnCount):
+        self.eId = imp_id
+        self.eStatus = status
+        self.eCanCount = canCount
+        self.eWarnCount = warnCount
+
+
+def populateRoutesForStopDatabase(stopID, date):
+    #database call
+    database.findRoutesForStop(stopID)
+    
+    fakeRouteList=[
+        fakeRouteElement(95,1,0,0),
+        fakeRouteElement(75,1,0,0),
+        fakeRouteElement(85,1,0,0),
+        fakeRouteElement(88,1,0,0),
+        fakeRouteElement(4,1,1,2)
+    ]
+
+    return fakeRouteList
+
 
 fakeRouteList=[
     fakeRouteElement(95,1,0,0),
@@ -151,7 +187,7 @@ fakeRouteList2=[
     { "eId": 5, "eStatus": 1,"eCanCount": 1, "eWarnCount": 2}
 ]
 
-## Dev area for routes 
+# Routes
 @app.route('/<routeID>/<stopID>')
 def routesAndStops(routeID, stopID):
 
@@ -195,6 +231,37 @@ def routesAndStops(routeID, stopID):
     else:
         index()
 
+@app.route('/<routeID>/<stopID>/json')
+def routesAndStopsJson(routeID, stopID):
+
+    def make_summary():
+        return fakeRouteList2
+
+    if routeID is not None or stopID is not None: 
+        if routeID.lower() == "all":
+            if routeID is not None:
+                data = make_summary()
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+
+        else:
+            if routeID is not None:
+                data = make_summary()
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+
+    else:
+        index()
+
+
 @app.route('/<routeID>')
 def busRoutes(routeID):
 
@@ -211,6 +278,28 @@ def busRoutes(routeID):
     else:
         index()
 
+@app.route('/<routeID>/json')
+def busRoutesJson(routeID):
+
+    #Route valid parsing needs to be done here
+    #add "isValid" to the first if
+
+    def make_summary():
+        return fakeRouteList2
+
+    if routeID is not None:
+        data = make_summary()
+        response = app.response_class(
+            response=json.dumps(data),
+            status=200,
+            mimetype='application/json'
+        )
+        return response
+
+    else:
+        index()
+
+
 @app.route('/')
 def index():
 
@@ -220,13 +309,7 @@ def index():
     statusLevel=STATUSLEVELS.OK, 
     mastDescrip="Who knows. We don't. Move along.")
 
-## Old
-
-
-@app.route('/poop')
-def home():
-    return render_template("index.html")
-
+# Historical Routes
 
 @app.route('/cancel/jan')
 def jan():
