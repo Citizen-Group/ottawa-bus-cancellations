@@ -10,6 +10,7 @@ import csv
 import os
 import routes
 import database
+from flask import json
 
 #MongoDB
 
@@ -230,6 +231,37 @@ def routesAndStops(routeID, stopID):
     else:
         index()
 
+@app.route('/<routeID>/<stopID>/json')
+def routesAndStopsJson(routeID, stopID):
+
+    def make_summary():
+        return fakeRouteList2
+
+    if routeID is not None or stopID is not None: 
+        if routeID.lower() == "all":
+            if routeID is not None:
+                data = make_summary()
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+
+        else:
+            if routeID is not None:
+                data = make_summary()
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+
+    else:
+        index()
+
+
 @app.route('/<routeID>')
 def busRoutes(routeID):
 
@@ -245,6 +277,28 @@ def busRoutes(routeID):
         mastDescrip="Display "+ routeID +" route information ")
     else:
         index()
+
+@app.route('/<routeID>/json')
+def busRoutesJson(routeID):
+
+    #Route valid parsing needs to be done here
+    #add "isValid" to the first if
+
+    def make_summary():
+        return fakeRouteList2
+
+    if routeID is not None:
+        data = make_summary()
+        response = app.response_class(
+            response=json.dumps(data),
+            status=200,
+            mimetype='application/json'
+        )
+        return response
+
+    else:
+        index()
+
 
 @app.route('/')
 def index():
