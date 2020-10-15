@@ -9,6 +9,7 @@ import json
 import csv
 import os
 import routes
+import database
 
 #MongoDB
 
@@ -122,6 +123,8 @@ with open(filename5, 'r') as csvfile:
 
 #MAIN
 
+database.onStart()
+
 from flask import Flask, render_template
 app = Flask(__name__)
 
@@ -154,6 +157,21 @@ class fakeStopElement():
         self.eStatus = status
         self.eCanCount = canCount
         self.eWarnCount = warnCount
+
+
+def populateRoutesForStopDatabase(stopID, date):
+    #database call
+    database.findRoutesForStop(stopID)
+    
+    fakeRouteList=[
+        fakeRouteElement(95,1,0,0),
+        fakeRouteElement(75,1,0,0),
+        fakeRouteElement(85,1,0,0),
+        fakeRouteElement(88,1,0,0),
+        fakeRouteElement(4,1,1,2)
+    ]
+
+    return fakeRouteList
 
 
 fakeRouteList=[
