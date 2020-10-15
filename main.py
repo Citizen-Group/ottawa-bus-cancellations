@@ -125,19 +125,36 @@ with open(filename5, 'r') as csvfile:
 from flask import Flask, render_template
 app = Flask(__name__)
 
+# Global Vars
+# I'll do the work here and we can later move it out to its on .py
+
 class STATUSLEVELS():
     DANGER = 2,
     WARNING = 1,
     OK = 0
 
-# I'll need to define a "Route, return and stop class element soon"
-
-class fakeRouteElement():    
+class transitElement():    
     def __init__(self, imp_id, status, canCount, warnCount):
         self.eId = imp_id
         self.eStatus = status
         self.eCanCount = canCount
         self.eWarnCount = warnCount
+
+class fakeRouteElement(transitElement):    
+    def __init__(self, imp_id, status, canCount, warnCount):
+        self.eId = imp_id
+        self.eStatus = status
+        self.eCanCount = canCount
+        self.eWarnCount = warnCount
+
+
+class fakeStopElement():
+    def __init__(self, imp_id, status, canCount, warnCount):
+        self.eId = imp_id
+        self.eStatus = status
+        self.eCanCount = canCount
+        self.eWarnCount = warnCount
+
 
 fakeRouteList=[
     fakeRouteElement(95,1,0,0),
@@ -151,7 +168,7 @@ fakeRouteList2=[
     { "eId": 5, "eStatus": 1,"eCanCount": 1, "eWarnCount": 2}
 ]
 
-## Dev area for routes 
+# Routes
 @app.route('/<routeID>/<stopID>')
 def routesAndStops(routeID, stopID):
 
@@ -220,13 +237,7 @@ def index():
     statusLevel=STATUSLEVELS.OK, 
     mastDescrip="Who knows. We don't. Move along.")
 
-## Old
-
-
-@app.route('/poop')
-def home():
-    return render_template("index.html")
-
+# Historical Routes
 
 @app.route('/cancel/jan')
 def jan():
