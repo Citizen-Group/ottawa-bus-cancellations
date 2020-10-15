@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -57,12 +56,12 @@
                 <p class="pre-wrap masthead-subheading font-weight-light mb-0">{{mastDescrip|default("*bleep-boop bleep-boop*", false)}}</p>
             </div>
         </header>
-
+        
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <!-- Portfolio Section Heading-->
                 <div class="text-center">
-                    <h2 class="page-section-heading text-secondary mb-0 d-inline-block">MAIN CONTENT</h2>
+                    <h2 class="page-section-heading text-secondary mb-0 d-inline-block">MAIN STUFF</h2>
                 </div>
                 <!-- Icon Divider-->
                 <div class="divider-custom">
@@ -70,9 +69,18 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <!-- Portfolio Grid Items-->
                 <div class="row">
-                    
+                    <div class="col-lg-4 ml-auto">
+                        <p class="lead">
+                            {% for item in fakeRouteListSend %}
+                                {% if item.eWarnCount > 0 %}
+                                    <b>{{ item.eId }}</b>
+                                {% else %}
+                                    {{ item.eId }}
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -81,7 +89,7 @@
             <div class="container">
                 <!-- About Section Heading-->
                 <div class="text-center">
-                    <h2 class="page-section-heading d-inline-block text-white">ABOUT</h2>
+                    <h2 class="page-section-heading d-inline-block text-white">SECONDARY STUFF</h2>
                 </div>
                 <!-- Icon Divider-->
                 <div class="divider-custom divider-light">
@@ -92,33 +100,7 @@
                 <!-- About Section Content-->
                 <div class="row">
                     <div class="col-lg-4 ml-auto">
-                        <p class="pre-wrap lead">Occasional Transpo: Bus Edition is a light hearted look bus transportation provided by Ottawa's transit authority OC Transpo.  </p>
-                    </div>
-                    <div class="col-lg-4 mr-auto">
-                        <p class="pre-wrap lead">Our goal is to tackle the age old question: Where the fk is my bus?</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="page-section" id="contact">
-            <div class="container">
-                <!-- Contact Section Heading-->
-                <div class="text-center">
-                    <h2 class="page-section-heading text-secondary d-inline-block mb-0">CONTACT</h2>
-                </div>
-                <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- Contact Section Content-->
-                <div class="row justify-content-center">
-                    <div class="col-lg-4">
-                        <div class="d-flex flex-column align-items-center">
-                            <div class="icon-contact mb-3"><i class="far fa-envelope"></i></div>
-                            <div class="text-muted">Email</div><a class="lead font-weight-bold" href="mailto:control.ottawa@gmail.com">control.ottawa@gmail.com</a>
-                        </div>
+                        <p class="pre-wrap lead">SomeText</p>
                     </div>
                 </div>
             </div>
@@ -163,6 +145,6 @@
         <script src="assets/mail/contact_me.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        
+
     </body>
 </html>
