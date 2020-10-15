@@ -163,7 +163,7 @@ class fakeStopElement():
 
 def populateRoutesForStopDatabase(stopID, date):
     #database call
-    database.findRoutesForStop(stopID)
+    database.findRoutesForStop(stopID, "17:00:00")
     
     fakeRouteList=[
         fakeRouteElement(95,1,0,0),
