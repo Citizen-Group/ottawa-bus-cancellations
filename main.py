@@ -151,6 +151,21 @@ class fakeRouteElement(transitElement):
         self.eStatus = status
         self.eCanCount = canCount
         self.eWarnCount = warnCount
+        self.alert=(
+        {
+            "timestamp" : 13124675,
+            "title" : "This is the title",
+            "subtext" : "This is main body text",
+            "location": {
+                "text" : "Blah St.",
+                "lat" : "45.231546",
+                "lon" : "-72.254313"
+            },
+            "reason" : {
+                "short" : "Short title Reason for problem",
+                "long" : "Long reason title for problem"
+            }
+        })
 
 
 class fakeStopElement():
